@@ -1,0 +1,28 @@
+name: Download Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Install HTTrack
+      run: sudo apt-get install -y httrack
+
+    - name: Download Website
+      run: httrack https://isaidub9.com/ -O ./downloaded-website
+
+    - name: Commit and Push Changes
+      run: |
+        git config --local user.name "github-actions"
+        git config --local user.email "github-actions@github.com"
+        git add downloaded-website
+        git commit -m "Add downloaded website content"
+        git push
